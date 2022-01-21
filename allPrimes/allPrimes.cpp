@@ -1,16 +1,22 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 
 void printVector(const std::vector<int> &v) {
 	unsigned size = v.size();
 	for (int i = 0; i < size; ++i) {
 		std::cout << v[i] << ' ';
+
+		if (i > 0 && i % 9 == 0) {
+			std::cout << '\n';
+		}
 	}
 
 }
 
 void allPrimes(int limit) {
 	std::vector<int> numbers;
+
 	for (int i = 1; i <= limit; ++i) {
 		numbers.push_back(i);
 	}
@@ -38,12 +44,12 @@ void ignoreLine() { //cleans the buffer
 }
 
 int getnumber() {
-	while (true) { //loops when user inputs an invalid value.
+	while (true) { //loops when user inputs an invalid value, i.e. character and negative numbers
 		std::cout << "Please enter a natural number: ";
-		unsigned int number{};
+		int number{};
 		std::cin >> number;
 
-		if (std::cin.fail() || number <=0) {
+		if (std::cin.fail() || number <= 0) {
 			std::cin.clear();
 			ignoreLine();
 			std::cerr << "That is an invalid output, please try again.\n";
