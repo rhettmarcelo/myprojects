@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-void printVector(const std::vector<int> &v) {
+void printVector(const std::vector<int>& v) {
 	unsigned size = v.size();
 	for (int i = 0; i < size; ++i) {
 		std::cout << v[i] << ' ';
@@ -20,12 +20,12 @@ void allPrimes(int limit) {
 
 	for (int i = 0; i < numbers.size(); ++i) {
 		int x = numbers[counter];
-		
+
 		for (int j = counter + 1; j < numbers.size(); ++j) {
 			if ((numbers[j] % x) == 0) {
 				numbers.erase(numbers.begin() + j);
 			}
-			
+
 		}
 		numbers.shrink_to_fit();
 		++counter;
@@ -35,7 +35,7 @@ void allPrimes(int limit) {
 int main() {
 	std::cout << "This program determines all the prime numbers in the set of natural numbers until the specified N. \n";
 	std::cout << "Please enter a natural number: ";
-	
+
 	int choice{};
 
 	std::cin >> choice;
