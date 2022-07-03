@@ -72,6 +72,14 @@ public:
 		SDL_RenderCopy(m_pRenderer, m_pTexture, &srcRect, &bounds);
 	}
 
+	int GetXSize() {
+		return m_xSize;
+	}
+
+	int GetYSize() {
+		return m_ySize;
+	}
+
 private:
 	//colors to type Uint32
 	Uint32 ConvertColor(const double red, const double green, const double blue) {

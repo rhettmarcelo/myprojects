@@ -2,6 +2,9 @@
 #define CAPP_H
 #include <SDL.h>
 #include "RhettImage.hpp"
+#include "Scene.hpp"
+#include "camera.hpp"
+#include "qbLinAlg/qbVector.h"
 
 
 class CApp {
@@ -40,14 +43,29 @@ public:
 			//initializing the rhettImage;
 			m_image.Initialize(xResolution, yResolution, pRenderer);
 
-			//creating color variations
-			for (int x = 0; x < xResolution; ++x) {
-				for (int y = 0; y < yResolution; ++y) {
-					double red = (static_cast<double>(x) / static_cast<double>(xResolution)) * 255;
-					double green = (static_cast<double>(y) / static_cast<double>(yResolution)) * 255;
-					m_image.SetPixel(x, y, red, green, 127.0); //blue is fixed at 120.0
-				}
-			}
+			//adding from Ray and Camera classes, for testing
+			rhettRT::Camera testCamera;
+			testCamera.SetPosition(qbVector<double>(std::vector<double>{0.0, 0.0, 0.0}));
+			testCamera.SetLookAt(qbVector<double>(std::vector<double>{0.0, 2.0, 0.0}));
+			testCamera.SetUp(qbVector<double>(std::vector<double>{0.0, 0.0, 1.0}));
+			testCamera.SetLength(1.0);
+			testCamera.SetHorzSize(1.0);
+			testCamera.SetAspect(1.0);
+			testCamera.UpdateCameraGeometry();
+
+			//Gets the screen center and U/V vectors and display
+			auto screenCenter = testCamera.GetScreenCenter();
+			auto screenU = testCamera.GetU();
+			auto screenV = testCamera.GetV();
+
+			//to display at console
+			std::cout << "Camera screen center: " << '\n';
+			PrintVector(screenCenter);
+			std::cout << "Camera U vector: " << '\n';
+			PrintVector(screenU);
+			std::cout << "Camera V vector: " << '\n';
+			PrintVector(screenV);
+
 		}
 		else {
 			return false;
@@ -70,6 +88,9 @@ public:
 		SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255); //White
 		SDL_RenderClear(pRenderer);
 		
+		//rendering the scene
+		m_scene.Render(m_image);
+
 		//display image
 		m_image.Display();
 
@@ -84,14 +105,22 @@ public:
 	}
 
 private:
-	//an instance of rhettImage to store the image
+	//an instance of rhettImage and scene to store the image
 	RhettImage m_image;
+	rhettRT::Scene m_scene;
 
 	static constexpr int xResolution{ 2560 };
 	static constexpr int yResolution{ 1440 };
 	bool isRunning{};
 	SDL_Window* pWindow;
 	SDL_Renderer* pRenderer;
+
+	void PrintVector(const qbVector<double>& inputVector) {
+		int nRows{ inputVector.GetNumDims() };
+		for (int row = 0; row < nRows; ++row) {
+			std::cout << std::fixed << std::setprecision(3) << inputVector.GetElement(row) << '\n';
+		}
+	}
 };
 
 #endif // !CAPP_H
