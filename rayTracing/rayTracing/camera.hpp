@@ -30,8 +30,8 @@ namespace rhettRT {
 		void SetLength(double newLength) {
 			m_cameraLength = newLength;
 		}
-		void SetHorzSize(double newSize) {
-			m_cameraHorzSize = newSize;
+		void SetHorzSize(double newHorzSize) {
+			m_cameraHorzSize = newHorzSize;
 		}
 		void SetAspect(double newAspect) {
 			m_cameraAspectRatio = newAspect;
@@ -67,13 +67,17 @@ namespace rhettRT {
 		}
 
 		//Ray generation function
-		Ray generateRay(float proScreenX, float proScreenY) {
+		bool generateRay(float proScreenX, float proScreenY, Ray &cameraRay) {
 			//computes the location of the screen point in world coordinates, at U and V
 			qbVector<double> screenWorldPart1 = m_projectionScreenCenter + (m_projectionScreenU * proScreenX);
 			qbVector<double> screenWorldCoordinate = screenWorldPart1 + (m_projectionScreenV * proScreenY);
 
 			//Uses this point that utilizes the camera position to compute the ray
-			return Ray(m_cameraPosition, screenWorldCoordinate);
+			cameraRay.m_point1 = m_cameraPosition;
+			cameraRay.m_point2 = screenWorldCoordinate;
+			cameraRay.m_lab = screenWorldCoordinate - m_cameraPosition;
+
+			return true;
 		}
 
 		//Camera geometry updater

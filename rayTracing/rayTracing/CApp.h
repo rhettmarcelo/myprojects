@@ -16,7 +16,7 @@ public:
 	}
 
 	int OnExecute() {
-		SDL_Event event{};
+		SDL_Event event;
 		if (OnInit() == false) {
 			return -1;
 		}
@@ -43,28 +43,18 @@ public:
 			//initializing the rhettImage;
 			m_image.Initialize(xResolution, yResolution, pRenderer);
 
-			//adding from Ray and Camera classes, for testing
-			rhettRT::Camera testCamera;
-			testCamera.SetPosition(qbVector<double>(std::vector<double>{0.0, 0.0, 0.0}));
-			testCamera.SetLookAt(qbVector<double>(std::vector<double>{0.0, 2.0, 0.0}));
-			testCamera.SetUp(qbVector<double>(std::vector<double>{0.0, 0.0, 1.0}));
-			testCamera.SetLength(1.0);
-			testCamera.SetHorzSize(1.0);
-			testCamera.SetAspect(1.0);
-			testCamera.UpdateCameraGeometry();
+			//sets the bg color to white
+			SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255);
+			SDL_RenderClear(pRenderer);
 
-			//Gets the screen center and U/V vectors and display
-			auto screenCenter = testCamera.GetScreenCenter();
-			auto screenU = testCamera.GetU();
-			auto screenV = testCamera.GetV();
+			//Rendering the scene
+			m_scene.Render(m_image);
 
-			//to display at console
-			std::cout << "Camera screen center: " << '\n';
-			PrintVector(screenCenter);
-			std::cout << "Camera U vector: " << '\n';
-			PrintVector(screenU);
-			std::cout << "Camera V vector: " << '\n';
-			PrintVector(screenV);
+			//Displaying the image
+			m_image.Display();
+
+			//showing the result
+			SDL_RenderPresent(pRenderer);
 
 		}
 		else {
@@ -85,16 +75,17 @@ public:
 	}
 
 	void OnRender() {//Sets the background color
-		SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255); //White
-		SDL_RenderClear(pRenderer);
-		
-		//rendering the scene
-		m_scene.Render(m_image);
+		//commenting out as of July 3
+		//SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255); //White
+		//SDL_RenderClear(pRenderer);
+		//
+		////rendering the scene
+		//m_scene.Render(m_image);
 
-		//display image
-		m_image.Display();
+		////display image
+		//m_image.Display();
 
-		SDL_RenderPresent(pRenderer); //Show the result
+		//SDL_RenderPresent(pRenderer); //Show the result
 	}
 
 	void OnExit() { //Our "destructor" to clean things up

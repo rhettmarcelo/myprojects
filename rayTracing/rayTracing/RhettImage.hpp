@@ -122,6 +122,7 @@ private:
 		//creates a texture that will store the image, parameter is 32 as there are 32 bits per pixel 
 		SDL_Surface* tempSurface = SDL_CreateRGBSurface(0, m_xSize, m_ySize, 32, rmask, gmask, bmask, amask);
 		m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, tempSurface);
+		SDL_FreeSurface(tempSurface);
 	}
 
 private:
